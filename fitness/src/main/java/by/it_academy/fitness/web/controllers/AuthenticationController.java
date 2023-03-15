@@ -5,6 +5,7 @@ import by.it_academy.fitness.core.dto.user.UserLogInDTO;
 import by.it_academy.fitness.core.dto.user.UserRegistrationDTO;
 import by.it_academy.fitness.service.UserHolder;
 import by.it_academy.fitness.service.api.user.IAuthenticationService;
+import by.it_academy.fitness.web.utils.JwtTokenUtil;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -40,8 +41,9 @@ public class AuthenticationController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public ResponseEntity<String> logIn(@RequestBody @Valid UserLogInDTO userLogInDTO) {
-        service.logIn(userLogInDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(service.logIn(userLogInDTO));
+       UserDTO userDTO= service.logIn(userLogInDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(JwtTokenUtil.generateAccessToken(userDTO));
     }
 
     @RequestMapping(path = "/me", method = RequestMethod.GET)

@@ -37,14 +37,17 @@ public class AuthenticationService implements IAuthenticationService {
         this.iUserService = iUserService;
     }
 
-    public String logIn(UserLogInDTO userLogInDTO) {
+    public UserDTO logIn(UserLogInDTO userLogInDTO) {
         UserEntity userEntity = dao.findByMail(userLogInDTO.getMail());
+        if(userEntity==null){
+            throw new NotFoundException("Такого юзера не существует");
+        }
         try {
             encoder.matches(userLogInDTO.getPassword(), userEntity.getPassword());
         }catch (RuntimeException e) {
             throw new ValidException("Введены некорректные данные");
         }
-        return JwtTokenUtil.generateAccessToken(userEntity);
+        return conversionService.convert(userEntity,UserDTO.class);
     }
 
 
@@ -60,7 +63,6 @@ public class AuthenticationService implements IAuthenticationService {
             userEntity.setCode(code.toString());
             dao.save(userEntity);
             emailService.sendSimpleEmail(userRegistrationDTO.getMail(), "Verification", code.toString());
-
         }
     }
 

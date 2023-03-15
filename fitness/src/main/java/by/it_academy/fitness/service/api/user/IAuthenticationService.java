@@ -5,7 +5,7 @@ import by.it_academy.fitness.core.dto.user.UserLogInDTO;
 import by.it_academy.fitness.core.dto.user.UserRegistrationDTO;
 
 public interface IAuthenticationService {
-    String logIn(UserLogInDTO userLogInDTO);
+    UserDTO logIn(UserLogInDTO userLogInDTO);
 
     void registration(UserRegistrationDTO userRegistrationDTO);
 

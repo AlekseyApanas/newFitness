@@ -39,11 +39,6 @@ public class SpringConfig {
 
     @Bean
     public IAuthenticationService authenticationService(IAuthenticationDao dao, ConversionService conversionService, IEmailService iEmailService, BCryptPasswordEncoder encoder, IUserService iUserService) {
-        try {
-            iUserService.getUser("admin@mail.ru");
-        } catch (RuntimeException e) {
-            iUserService.create(new AddUserDTO("admin@mail.ru", "admin", "123", UserRole.ADMIN.toString(), UserStatus.ACTIVATED.toString()));
-        }
         return new AuthenticationService(dao, conversionService, iEmailService, encoder, iUserService);
     }
 

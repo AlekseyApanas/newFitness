@@ -1,6 +1,6 @@
 package by.it_academy.fitness.web.utils;
 
-import by.it_academy.fitness.entity.UserEntity;
+import by.it_academy.fitness.core.dto.user.UserDTO;
 import io.jsonwebtoken.*;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ public class JwtTokenUtil {
     private static final String jwtIssuer = "ITAcademy";
 
 
-    public static String generateAccessToken(UserEntity user) {
+    public static String generateAccessToken(UserDTO user) {
         return generateAccessToken(user.getMail());
     }
 
