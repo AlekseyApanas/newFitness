@@ -26,13 +26,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http = http.cors().and().csrf().disable();
 
-        // Set session management to stateless
         http = http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and();
 
-        // Set unauthorized requests exception handler
         http = http
                 .exceptionHandling()
                 .authenticationEntryPoint(
@@ -43,22 +41,26 @@ public class SecurityConfig {
                             );
                         }
                 )
+                .accessDeniedHandler((request, response, ex) -> {
+                    response.setStatus(
+                            HttpServletResponse.SC_FORBIDDEN
+                    );
+                })
                 .and();
 
-        // Set permissions on endpoints
         http
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/api/v1/users/**").hasAnyAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/v1/users/registration").permitAll()
                         .requestMatchers("/api/v1/users/verification").permitAll()
                         .requestMatchers("/api/v1/users/login").permitAll()
                         .requestMatchers("/api/v1/users/me").authenticated()
-                        .requestMatchers(HttpMethod.GET,"/api/v1/product").authenticated()
-                        .requestMatchers(HttpMethod.GET,"/api/v1/recipe").authenticated()
-                        .requestMatchers(HttpMethod.PUT,"/api/v1/product/**").hasAnyAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"/api/v1/recipe/**").hasAnyAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.POST,"/api/v1/product/**").hasAnyAuthority("ROLE_ADMIN")
-                        .requestMatchers(HttpMethod.POST,"/api/v1/recipe/**").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/v1/users/**").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/product").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/recipe").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/product/**").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/recipe/**").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/product/**").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/recipe/**").hasAnyAuthority("ROLE_ADMIN")
                 )
                 .httpBasic(withDefaults());
         http.addFilterBefore(

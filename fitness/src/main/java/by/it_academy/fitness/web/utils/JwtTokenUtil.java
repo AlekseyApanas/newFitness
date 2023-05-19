@@ -2,51 +2,61 @@ package by.it_academy.fitness.web.utils;
 
 import by.it_academy.fitness.core.dto.user.UserDTO;
 import io.jsonwebtoken.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+@Component
 public class JwtTokenUtil {
 
-    private static final String jwtSecret = "NDQ1ZjAzNjQtMzViZi00MDRjLTljZjQtNjNjYWIyZTU5ZDYw";
-    private static final String jwtIssuer = "ITAcademy";
+    private final JWTProperty property;
 
-
-    public static String generateAccessToken(UserDTO user) {
-        return generateAccessToken(user.getMail());
+    public JwtTokenUtil(JWTProperty property) {
+        this.property = property;
     }
 
-    public static String generateAccessToken(String name) {
-        return Jwts.builder()
+    public String generateAccessToken(Map<String, Object> claims, String name) {
+        return Jwts.builder().setClaims(claims)
                 .setSubject(name)
-                .setIssuer(jwtIssuer)
+                .setIssuer(property.getIssuer())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7))) // 1 week
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, property.getSecret())
                 .compact();
     }
 
-    public static String getUserMail(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getSubject();
+    public String generateToken(UserDTO userDTO) {
+        Map<String, Object> claims = new HashMap<>();
+        String commaSeparatedListOfAuthorities = userDTO.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+        claims.put("authorities", commaSeparatedListOfAuthorities);
+        claims.put("uuid", userDTO.getUuid());
+        claims.put("fio", userDTO.getFio());
+        return generateAccessToken(claims, userDTO.getUsername());
     }
 
-    public static Date getExpirationDate(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
-
-        return claims.getExpiration();
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
-    public static boolean validate(String token) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(property.getSecret()).parseClaimsJws(token).getBody();
+    }
+
+
+    public boolean validate(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(property.getSecret()).parseClaimsJws(token);
             return true;
         } catch (MalformedJwtException ex) {
             //logger.error("Invalid JWT token - {}", ex.getMessage());

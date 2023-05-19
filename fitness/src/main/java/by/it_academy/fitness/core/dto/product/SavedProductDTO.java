@@ -3,7 +3,7 @@ package by.it_academy.fitness.core.dto.product;
 import java.time.Instant;
 
 public class SavedProductDTO {
-    AddProductDTO addProductDTO;
+   private AddProductDTO addProductDTO;
     private Instant dtUpdate;
     private Instant dtCreate;
 

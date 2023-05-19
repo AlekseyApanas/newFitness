@@ -1,9 +1,9 @@
 package by.it_academy.fitness.service;
 
-import by.it_academy.fitness.core.dto.user.UserDTO;
-import by.it_academy.fitness.core.dto.user.UpdateUserDTO;
-import by.it_academy.fitness.core.dto.user.AddUserDTO;
 import by.it_academy.fitness.core.dto.page.PageDTO;
+import by.it_academy.fitness.core.dto.user.AddUserDTO;
+import by.it_academy.fitness.core.dto.user.UpdateUserDTO;
+import by.it_academy.fitness.core.dto.user.UserDTO;
 import by.it_academy.fitness.core.exception.CheckDoubleException;
 import by.it_academy.fitness.core.exception.CheckVersionException;
 import by.it_academy.fitness.core.exception.NotFoundException;

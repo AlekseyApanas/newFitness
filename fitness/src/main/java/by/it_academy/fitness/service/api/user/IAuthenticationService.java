@@ -11,5 +11,4 @@ public interface IAuthenticationService {
 
     void verification(String code,String mail);
 
-    UserDTO infoAboutMe();
 }

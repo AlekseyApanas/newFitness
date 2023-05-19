@@ -14,15 +14,12 @@ import by.it_academy.fitness.service.api.mail.IEmailService;
 import by.it_academy.fitness.service.api.user.IAuthenticationService;
 import by.it_academy.fitness.service.api.user.IUserService;
 import by.it_academy.fitness.userEnum.UserStatus;
-import by.it_academy.fitness.web.utils.JwtTokenUtil;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 
 import java.util.UUID;
 
 public class AuthenticationService implements IAuthenticationService {
-
     private final IAuthenticationDao dao;
     private final ConversionService conversionService;
     private final IEmailService emailService;
@@ -39,15 +36,15 @@ public class AuthenticationService implements IAuthenticationService {
 
     public UserDTO logIn(UserLogInDTO userLogInDTO) {
         UserEntity userEntity = dao.findByMail(userLogInDTO.getMail());
-        if(userEntity==null){
+        if (userEntity == null) {
             throw new NotFoundException("Такого юзера не существует");
         }
         try {
             encoder.matches(userLogInDTO.getPassword(), userEntity.getPassword());
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new ValidException("Введены некорректные данные");
         }
-        return conversionService.convert(userEntity,UserDTO.class);
+        return conversionService.convert(userEntity, UserDTO.class);
     }
 
 
@@ -57,7 +54,7 @@ public class AuthenticationService implements IAuthenticationService {
         if (userEntity != null) {
             throw new CheckDoubleException("Юзер с таким mail уже существует");
         } else {
-            iUserService.create(new AddUserDTO(userRegistrationDTO.getMail(),userRegistrationDTO.getFio(),userRegistrationDTO.getPassword()));
+            iUserService.create(new AddUserDTO(userRegistrationDTO.getMail(), userRegistrationDTO.getFio(), userRegistrationDTO.getPassword()));
             UUID code = UUID.randomUUID();
             userEntity = dao.findByMail(userRegistrationDTO.getMail());
             userEntity.setCode(code.toString());
@@ -74,10 +71,5 @@ public class AuthenticationService implements IAuthenticationService {
             userEntity.setCode(null);
             dao.save(userEntity);
         } else throw new NotFoundException("Такого юзера не существует");
-    }
-
-    @Override
-    public UserDTO infoAboutMe() {
-        return null;
     }
 }

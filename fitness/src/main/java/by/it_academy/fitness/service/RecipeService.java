@@ -4,8 +4,8 @@ import by.it_academy.fitness.core.dto.page.PageDTO;
 import by.it_academy.fitness.core.dto.recipe.AddRecipeDTO;
 import by.it_academy.fitness.core.dto.recipe.RecipeDTO;
 import by.it_academy.fitness.core.dto.recipe.SavedRecipeDTO;
-import by.it_academy.fitness.core.dto.recipe.ingredient.AddIngredientDTO;
 import by.it_academy.fitness.core.dto.recipe.UpdateRecipeDTO;
+import by.it_academy.fitness.core.dto.recipe.ingredient.AddIngredientDTO;
 import by.it_academy.fitness.core.dto.recipe.ingredient.IngredientDTO;
 import by.it_academy.fitness.core.exception.CheckDoubleException;
 import by.it_academy.fitness.core.exception.CheckVersionException;
@@ -16,7 +16,6 @@ import by.it_academy.fitness.entity.ProductEntity;
 import by.it_academy.fitness.entity.RecipeEntity;
 import by.it_academy.fitness.service.api.product.IProductService;
 import by.it_academy.fitness.service.api.product.IRecipeService;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
