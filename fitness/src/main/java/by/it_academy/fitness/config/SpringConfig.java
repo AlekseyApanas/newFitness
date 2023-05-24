@@ -1,6 +1,5 @@
 package by.it_academy.fitness.config;
 
-import by.it_academy.fitness.core.dto.user.AddUserDTO;
 import by.it_academy.fitness.dao.api.product.IProductDao;
 import by.it_academy.fitness.dao.api.product.IRecipeDao;
 import by.it_academy.fitness.dao.api.user.IAuthenticationDao;
@@ -11,8 +10,6 @@ import by.it_academy.fitness.service.api.product.IProductService;
 import by.it_academy.fitness.service.api.product.IRecipeService;
 import by.it_academy.fitness.service.api.user.IAuthenticationService;
 import by.it_academy.fitness.service.api.user.IUserService;
-import by.it_academy.fitness.userEnum.UserRole;
-import by.it_academy.fitness.userEnum.UserStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;

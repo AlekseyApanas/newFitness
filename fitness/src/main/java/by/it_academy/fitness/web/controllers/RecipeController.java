@@ -3,7 +3,7 @@ package by.it_academy.fitness.web.controllers;
 import by.it_academy.fitness.core.dto.page.PageDTO;
 import by.it_academy.fitness.core.dto.recipe.AddRecipeDTO;
 import by.it_academy.fitness.core.dto.recipe.UpdateRecipeDTO;
-import by.it_academy.fitness.service.api.product.IRecipeService;
+import by.it_academy.fitness.facade.api.product.IRecipeFacade;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
@@ -18,29 +18,29 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/recipe")
 public class RecipeController {
-    private IRecipeService iRecipeService;
+    private IRecipeFacade recipeFacade;
 
-    public RecipeController(IRecipeService iRecipeService) {
-        this.iRecipeService = iRecipeService;
+    public RecipeController(IRecipeFacade recipeFacade) {
+        this.recipeFacade = recipeFacade;
     }
 
     @PutMapping(path = "/{uuid}/dt_update/{dt_update}")
     public ResponseEntity<?> update(@PathVariable("uuid") UUID userUUID,
                                     @PathVariable("dt_update") Instant dtUpdate,
                                     @RequestBody @Valid AddRecipeDTO addRecipeDTO) {
-        iRecipeService.update(new UpdateRecipeDTO(addRecipeDTO, dtUpdate, userUUID));
+        recipeFacade.update(new UpdateRecipeDTO(addRecipeDTO, dtUpdate, userUUID));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid AddRecipeDTO addRecipeDTO) {
-        iRecipeService.create(addRecipeDTO);
+        recipeFacade.create(addRecipeDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
     public ResponseEntity<PageDTO> get(@RequestParam(defaultValue = "0") @Min(0) int page, @RequestParam(defaultValue = "20") @Min(0) int size) {
-        return ResponseEntity.status(HttpStatus.OK).body(iRecipeService.get(page, size));
+        return ResponseEntity.status(HttpStatus.OK).body(recipeFacade.get(page, size));
     }
 }
 
