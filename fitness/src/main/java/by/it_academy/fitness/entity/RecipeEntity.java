@@ -32,8 +32,42 @@ public class RecipeEntity {
     )
     private List<IngredientEntity> composition;
 
+    private Integer weight;
+
+    private Integer calories;
+
+    private Double proteins;
+    private Double fats;
+
+    private Double carbohydrates;
+
 
     public RecipeEntity() {
+    }
+
+    public RecipeEntity(String title, List<IngredientEntity> composition) {
+        this.title = title;
+        this.composition = composition;
+    }
+
+    public RecipeEntity(UUID uuid, Instant dtUpdate, String title, List<IngredientEntity> composition) {
+        this.uuid = uuid;
+        this.dtUpdate = dtUpdate;
+        this.title = title;
+        this.composition = composition;
+    }
+
+    public RecipeEntity(UUID uuid, Instant dtCreate, Instant dtUpdate, String title, List<IngredientEntity> composition, Integer weight, Integer calories, Double proteins, Double fats, Double carbohydrates) {
+        this.uuid = uuid;
+        this.dtCreate = dtCreate;
+        this.dtUpdate = dtUpdate;
+        this.title = title;
+        this.composition = composition;
+        this.weight = weight;
+        this.calories = calories;
+        this.proteins = proteins;
+        this.fats = fats;
+        this.carbohydrates = carbohydrates;
     }
 
     public RecipeEntity(UUID uuid, Instant dtCreate, Instant dtUpdate, String title, List<IngredientEntity> composition) {
@@ -80,4 +114,5 @@ public class RecipeEntity {
     public void setComposition(List<IngredientEntity> composition) {
         this.composition = composition;
     }
+
 }

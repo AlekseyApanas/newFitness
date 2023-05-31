@@ -1,18 +1,16 @@
 package by.it_academy.fitness.service;
 
-import by.it_academy.fitness.core.dto.user.AddUserDTO;
-import by.it_academy.fitness.core.dto.user.UserDTO;
-import by.it_academy.fitness.core.dto.user.UserLogInDTO;
-import by.it_academy.fitness.core.dto.user.UserRegistrationDTO;
 import by.it_academy.fitness.core.exception.CheckDoubleException;
 import by.it_academy.fitness.core.exception.NotFoundException;
 import by.it_academy.fitness.core.exception.ValidException;
 import by.it_academy.fitness.dao.api.user.IAuthenticationDao;
+import by.it_academy.fitness.entity.RoleEntity;
 import by.it_academy.fitness.entity.StatusEntity;
 import by.it_academy.fitness.entity.UserEntity;
 import by.it_academy.fitness.service.api.mail.IEmailService;
 import by.it_academy.fitness.service.api.user.IAuthenticationService;
 import by.it_academy.fitness.service.api.user.IUserService;
+import by.it_academy.fitness.userEnum.UserRole;
 import by.it_academy.fitness.userEnum.UserStatus;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,32 +32,34 @@ public class AuthenticationService implements IAuthenticationService {
         this.iUserService = iUserService;
     }
 
-    public UserDTO logIn(UserLogInDTO userLogInDTO) {
-        UserEntity userEntity = dao.findByMail(userLogInDTO.getMail());
+    public UserEntity logIn(UserEntity user) {
+        UserEntity userEntity = dao.findByMail(user.getMail());
         if (userEntity == null) {
             throw new NotFoundException("Такого юзера не существует");
         }
         try {
-            encoder.matches(userLogInDTO.getPassword(), userEntity.getPassword());
+            encoder.matches(user.getPassword(), userEntity.getPassword());
         } catch (RuntimeException e) {
             throw new ValidException("Введены некорректные данные");
         }
-        return conversionService.convert(userEntity, UserDTO.class);
+        return userEntity;
     }
 
 
     @Override
-    public void registration(UserRegistrationDTO userRegistrationDTO) {
-        UserEntity userEntity = dao.findByMail(userRegistrationDTO.getMail());
+    public void registration(UserEntity user) {
+        UserEntity userEntity = dao.findByMail(user.getMail());
         if (userEntity != null) {
             throw new CheckDoubleException("Юзер с таким mail уже существует");
         } else {
-            iUserService.create(new AddUserDTO(userRegistrationDTO.getMail(), userRegistrationDTO.getFio(), userRegistrationDTO.getPassword()));
+            iUserService.create(new UserEntity(user.getMail(), user.getFio(), user.getPassword()));
             UUID code = UUID.randomUUID();
-            userEntity = dao.findByMail(userRegistrationDTO.getMail());
+            userEntity = dao.findByMail(user.getMail());
             userEntity.setCode(code.toString());
+            userEntity.setRole(new RoleEntity(UserRole.USER));
+            userEntity.setStatus(new StatusEntity(UserStatus.WAITING_ACTIVATION));
             dao.save(userEntity);
-            emailService.sendSimpleEmail(userRegistrationDTO.getMail(), "Verification", code.toString());
+            emailService.sendSimpleEmail(user.getMail(), "Verification", code.toString());
         }
     }
 

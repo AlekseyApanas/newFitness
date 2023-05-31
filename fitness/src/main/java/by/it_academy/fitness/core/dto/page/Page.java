@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PageDTO<T> {
+public class Page<T> {
     @JsonProperty("number")
     @NotEmpty
     private int number;
@@ -37,7 +37,7 @@ public class PageDTO<T> {
     @NotEmpty
     private List<T> content;
 
-    public PageDTO(int number, int size, int totalPages, long totalElements, boolean first, long numberOfElements, boolean last, List<T> content) {
+    public Page(int number, int size, int totalPages, long totalElements, boolean first, long numberOfElements, boolean last, List<T> content) {
         this.number = number;
         this.size = size;
         this.totalPages = totalPages;
@@ -48,7 +48,7 @@ public class PageDTO<T> {
         this.content = content;
     }
 
-    public PageDTO() {
+    public Page() {
     }
 
     public int getNumber() {
@@ -87,7 +87,7 @@ public class PageDTO<T> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PageDTO that = (PageDTO) o;
+        Page that = (Page) o;
         return number == that.number && size == that.size && totalPages == that.totalPages && totalElements == that.totalElements && first == that.first && numberOfElements == that.numberOfElements && last == that.last && Objects.equals(content, that.content);
     }
 

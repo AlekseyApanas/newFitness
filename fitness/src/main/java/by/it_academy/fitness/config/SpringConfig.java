@@ -4,12 +4,21 @@ import by.it_academy.fitness.dao.api.product.IProductDao;
 import by.it_academy.fitness.dao.api.product.IRecipeDao;
 import by.it_academy.fitness.dao.api.user.IAuthenticationDao;
 import by.it_academy.fitness.dao.api.user.IUserDao;
+import by.it_academy.fitness.facade.FacadeForAuthentication;
+import by.it_academy.fitness.facade.FacadeForProduct;
+import by.it_academy.fitness.facade.FacadeForRecipe;
+import by.it_academy.fitness.facade.FacadeForUser;
+import by.it_academy.fitness.facade.api.product.IProductFacade;
+import by.it_academy.fitness.facade.api.product.IRecipeFacade;
+import by.it_academy.fitness.facade.api.user.IAuthenticationFacade;
+import by.it_academy.fitness.facade.api.user.IUserFacade;
 import by.it_academy.fitness.service.*;
 import by.it_academy.fitness.service.api.mail.IEmailService;
 import by.it_academy.fitness.service.api.product.IProductService;
 import by.it_academy.fitness.service.api.product.IRecipeService;
 import by.it_academy.fitness.service.api.user.IAuthenticationService;
 import by.it_academy.fitness.service.api.user.IUserService;
+import by.it_academy.fitness.web.utils.JwtTokenUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
@@ -28,6 +37,7 @@ public class SpringConfig {
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     @Bean
     public IUserService userService(IUserDao dao, ConversionService conversionService, PasswordEncoder encoder) {
@@ -52,6 +62,26 @@ public class SpringConfig {
     @Bean
     public IEmailService emailService(JavaMailSender emailSender) {
         return new EmailService(emailSender);
+    }
+
+    @Bean
+    public IAuthenticationFacade iAuthenticationFacade(IAuthenticationService authenticationService, JwtTokenUtil jwtTokenUtil, ConversionService conversionService) {
+        return new FacadeForAuthentication(authenticationService, jwtTokenUtil, conversionService);
+    }
+
+    @Bean
+    public IUserFacade iUserFacade(IUserService iUserService, ConversionService conversionService) {
+        return new FacadeForUser(iUserService, conversionService);
+    }
+
+    @Bean
+    public IProductFacade iProductFacade(IProductService iProductService, ConversionService conversionService) {
+        return new FacadeForProduct(iProductService, conversionService);
+    }
+
+    @Bean
+    public IRecipeFacade iRecipeFacade(IRecipeService iRecipeService, ConversionService conversionService) {
+        return new FacadeForRecipe(iRecipeService, conversionService);
     }
 
     @Bean

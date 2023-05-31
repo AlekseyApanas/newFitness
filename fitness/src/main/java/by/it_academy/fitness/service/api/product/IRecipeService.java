@@ -1,14 +1,13 @@
 package by.it_academy.fitness.service.api.product;
 
-import by.it_academy.fitness.core.dto.page.PageDTO;
-import by.it_academy.fitness.core.dto.recipe.AddRecipeDTO;
-import by.it_academy.fitness.core.dto.recipe.UpdateRecipeDTO;
+import by.it_academy.fitness.core.dto.page.Page;
+import by.it_academy.fitness.entity.RecipeEntity;
 
 
 public interface IRecipeService<T> {
-    void create(AddRecipeDTO recipeDTO);
+    void create(RecipeEntity recipeEntity);
 
-    PageDTO<T> get(int page, int size);
+    Page<T> get(int page, int size);
 
-    void update(UpdateRecipeDTO recipeDTO);
+    void update(RecipeEntity recipeEntity);
 }

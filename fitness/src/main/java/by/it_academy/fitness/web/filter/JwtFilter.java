@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,10 +24,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final IUserService userService;
     private final JwtTokenUtil jwtTokenUtil;
+    private final ConversionService conversionService;
 
-    public JwtFilter(IUserService userService, JwtTokenUtil jwtTokenUtil) {
+    public JwtFilter(IUserService userService, JwtTokenUtil jwtTokenUtil, ConversionService conversionService) {
         this.userService = userService;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.conversionService = conversionService;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-        UserDTO userDTO = userService.getUser(jwtTokenUtil.extractUsername(token));
+        UserDTO userDTO = conversionService.convert(userService.getUser(jwtTokenUtil.extractUsername(token)),UserDTO.class);
         UsernamePasswordAuthenticationToken
                 authentication = new UsernamePasswordAuthenticationToken(
                 userDTO, null, userDTO.getAuthorities());

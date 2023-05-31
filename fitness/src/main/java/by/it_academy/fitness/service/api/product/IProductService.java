@@ -1,18 +1,16 @@
 package by.it_academy.fitness.service.api.product;
 
-import by.it_academy.fitness.core.dto.page.PageDTO;
-import by.it_academy.fitness.core.dto.product.AddProductDTO;
-import by.it_academy.fitness.core.dto.product.ProductDTO;
-import by.it_academy.fitness.core.dto.product.UpdateProductDTO;
+import by.it_academy.fitness.core.dto.page.Page;
+import by.it_academy.fitness.entity.ProductEntity;
 
 import java.util.UUID;
 
 
 public interface IProductService<T> {
-    void create(AddProductDTO productDTO);
+    void create(ProductEntity productEntity);
 
-    PageDTO<T> get(int page, int size);
+    Page<T> get(int page, int size);
 
-    void update(UpdateProductDTO productDTO);
-    ProductDTO get(UUID id);
+    void update(ProductEntity productEntity);
+    ProductEntity get(UUID id);
 }

@@ -21,7 +21,25 @@ public class IngredientEntity {
         this.weight = weight;
     }
 
+
+    private Integer calories;
+
+    private Double proteins;
+
+    private Double fats;
+
+    private Double carbohydrates;
+
     public IngredientEntity() {
+    }
+
+    public IngredientEntity(ProductEntity product, Integer weight, Integer calories, Double proteins, Double fats, Double carbohydrates) {
+        this.product = product;
+        this.weight = weight;
+        this.calories = calories;
+        this.proteins = proteins;
+        this.fats = fats;
+        this.carbohydrates = carbohydrates;
     }
 
     public ProductEntity getProduct() {
@@ -30,5 +48,21 @@ public class IngredientEntity {
 
     public Integer getWeight() {
         return weight;
+    }
+
+    public Integer getCalories() {
+        return calories;
+    }
+
+    public Double getProteins() {
+        return proteins;
+    }
+
+    public Double getFats() {
+        return fats;
+    }
+
+    public Double getCarbohydrates() {
+        return carbohydrates;
     }
 }

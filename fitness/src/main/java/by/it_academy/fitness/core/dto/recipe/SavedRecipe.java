@@ -1,13 +1,15 @@
 package by.it_academy.fitness.core.dto.recipe;
 
+import by.it_academy.fitness.entity.RecipeEntity;
+
 import java.time.Instant;
 
-public class SavedRecipeDTO {
-    private AddRecipeDTO addRecipeDTO;
+public class SavedRecipe {
+    private RecipeEntity addRecipeDTO;
     private Instant dtCreate;
     private Instant dtUpdate;
 
-    public AddRecipeDTO getAddRecipeDTO() {
+    public RecipeEntity getAddRecipeDTO() {
         return addRecipeDTO;
     }
 
@@ -19,7 +21,7 @@ public class SavedRecipeDTO {
         return dtUpdate;
     }
 
-    public SavedRecipeDTO(AddRecipeDTO addRecipeDTO) {
+    public SavedRecipe(RecipeEntity addRecipeDTO) {
         this.addRecipeDTO = addRecipeDTO;
         this.dtCreate = Instant.now();
         this.dtUpdate = this.dtCreate;

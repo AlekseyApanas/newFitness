@@ -1,6 +1,6 @@
 package by.it_academy.fitness.web.controllers;
 
-import by.it_academy.fitness.core.dto.page.PageDTO;
+import by.it_academy.fitness.core.dto.page.Page;
 import by.it_academy.fitness.core.dto.product.AddProductDTO;
 import by.it_academy.fitness.core.dto.product.UpdateProductDTO;
 import by.it_academy.fitness.facade.api.product.IProductFacade;
@@ -39,7 +39,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<PageDTO> get(@RequestParam(defaultValue = "0") @Min(0) int page, @RequestParam(defaultValue = "20") @Min(0) int size) {
+    public ResponseEntity<Page> get(@RequestParam(defaultValue = "0") @Min(0) int page, @RequestParam(defaultValue = "20") @Min(0) int size) {
         return ResponseEntity.status(HttpStatus.OK).body(productFacade.get(page, size));
     }
 }

@@ -1,7 +1,7 @@
 package by.it_academy.fitness.web.controllers;
 
 
-import by.it_academy.fitness.core.dto.page.PageDTO;
+import by.it_academy.fitness.core.dto.page.Page;
 import by.it_academy.fitness.core.dto.user.AddUserDTO;
 import by.it_academy.fitness.core.dto.user.UpdateUserDTO;
 import by.it_academy.fitness.core.dto.user.UserDTO;
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<PageDTO> get(@RequestParam(defaultValue = "0") @Min(0) int page, @RequestParam(defaultValue = "20") @Min(0) int size) {
+    public ResponseEntity<Page> get(@RequestParam(defaultValue = "0") @Min(0) int page, @RequestParam(defaultValue = "20") @Min(0) int size) {
         return ResponseEntity.status(HttpStatus.OK).body(userFacade.get(page, size));
     }
 }

@@ -54,7 +54,7 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity( String mail, String fio, String password, Instant dtCreate, Instant dtUpdate, RoleEntity role, StatusEntity status) {
+    public UserEntity(String mail, String fio, String password, Instant dtCreate, Instant dtUpdate, RoleEntity role, StatusEntity status) {
         this.mail = mail;
         this.fio = fio;
         this.password = password;
@@ -62,6 +62,21 @@ public class UserEntity {
         this.dtUpdate = dtUpdate;
         this.role = role;
         this.status = status;
+    }
+
+    public UserEntity(UUID uuid, String mail, String fio, String password, Instant dtUpdate, RoleEntity role, StatusEntity status) {
+        this.uuid = uuid;
+        this.mail = mail;
+        this.fio = fio;
+        this.password = password;
+        this.dtUpdate = dtUpdate;
+        this.role = role;
+        this.status = status;
+    }
+
+    public UserEntity(String mail, String password) {
+        this.mail = mail;
+        this.password = password;
     }
 
     public UserEntity(String mail, String fio, String password, Instant dtCreate, Instant dtUpdate, RoleEntity role, StatusEntity status, String code) {
@@ -85,6 +100,12 @@ public class UserEntity {
         this.role = role;
         this.status = status;
         this.code = code;
+    }
+
+    public UserEntity(String mail, String fio, String password) {
+        this.mail = mail;
+        this.fio = fio;
+        this.password = password;
     }
 
     public UUID getUuid() {
